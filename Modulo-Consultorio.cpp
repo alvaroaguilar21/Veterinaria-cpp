@@ -31,7 +31,7 @@ struct Veterinario
 
 int menuVet();
 bool IniciarSesion(FILE *ArchVet);
-//void Listar_turno(FILE *turnos);
+void Listar_turno(FILE *turnos);
 void evolMasc(FILE *mascotas, FILE *turnos);
 
 
@@ -55,7 +55,7 @@ main(){
 			
 			case 2: if(ingreso == true){
 				
-			          //falta funcion listar turnos
+			         void Listar_turno(FILE *turnos);
                     }
                     else{
                     	printf("Inicie sesion");
@@ -106,8 +106,8 @@ int menuVet(){
 	printf("\t=================================\n");
 	printf("\t 1.- Iniciar sesion\n");
 	printf("\t 2.- Visualizar lista de espera de turnos(informe)\n");
-	printf("\t 3.- Registrar evolución de la mascota\n");
-	printf("\t 4.- Cerrar la aplicación\n");
+	printf("\t 3.- Registrar evoluciÃ³n de la mascota\n");
+	printf("\t 4.- Cerrar la aplicaciÃ³n\n");
 	printf("\t------------------------------------------\n");
 	printf("\nIngrese una opcion: ");
 	int opc;
@@ -124,7 +124,15 @@ bool IniciarSesion(FILE *ArchVet){
    cadena contr;
    Veterinario vet;
    
-  
+  if(ArchVet == NULL){
+		
+		system("CLS");
+		printf("\n\n Se produjo un ERROR al intentar abrir el archivo\n");
+		printf("comuniquese con el administrador del Sistema. Gracias");
+		printf("\n\n\t");
+		system("PAUSE");
+		exit(1);
+	}
    printf("INICIO DE SESION\n");
    printf("---------------");
    printf("Matricula: ");
@@ -151,29 +159,96 @@ bool IniciarSesion(FILE *ArchVet){
  
 }
 
+void Listar_turno(FILE *turnos){
+	
+	Turnos turn;
+	Mascota masc;
+	int dia, mes, anio;
+	int matric;
+	
+	turnos = fopen("Turnos.dat", "r+b");
+	mascotas = fopen("Mascotas.dat", "r+b");
+	
+	if(turnos == NULL){
+		
+		system("CLS");
+		printf("\n\n Se produjo un ERROR al intentar abrir el archivo\n");
+		printf("comuniquese con el administrador del Sistema. Gracias");
+		printf("\n\n\t");
+		system("PAUSE");
+		exit(1);
+	}
+	
+	printf("Ingrese fecha para visualizar los turnos: ");
+	scanf("%d/%d/%d",&dia, &mes, &anio);
+	printf("\nIngrese su Matricula: ");
+	scanf("%d", &matric);
+	printf("A continuacion se muestra la lista de turnos de la fecha %d/%d/%d", dia, mes, annio);
+	
+	rewind(turnos);
+	while(!feof(turnos)){
+		if(matric == turn.Matric_Veterinario && dia == turn.fecha.dia && mes == turn.fecha.mes && anio == turn.fecha.anio){
+			
+			printf("\nNombre: %s", Mascota.ApellidoyNombre);
+			printf("\nDomicilio: %s", Mascota.Domicilio);
+			printf("\nDNI: %d", Mascota.DNI_Duenio);
+			printf("\nPeso: %f", Mascota.Peso);
+				
+		}
+		
+		fread(&turn, sizeof(Turnos), 1, turnos);
+		fread(&masc, sizeof(Mascota), 1, mascotas);
+		
+	}
+	
+	
+	fclose(turnos);
+	fclose(mascotas);
+	
+	
+}
+
+
 void evolMasc(FILE *mascotas, FILE *turnos){ //Falta completar
 	
-	mascotas = fopen("Mascotas.dat", "r+b");
+	//mascotas = fopen("Mascotas.dat", "r+b");
 	turnos = fopen("Turnos.dat", "r+b");
 	
-	Mascota masc;
+	//Mascota masc;
 	Turnos turno;
-	char nomMasc[45];
+	//char nomMasc[45];
+	int dni;
 	bool bandera = false;
 	
-	printf("Ingrese el nombre de la mascota: ");
+	if(turnos == NULL){
+		
+		system("CLS");
+		printf("\n\n Se produjo un ERROR al intentar abrir el archivo\n");
+		printf("comuniquese con el administrador del Sistema. Gracias");
+		printf("\n\n\t");
+		system("PAUSE");
+		exit(1);
+	}
+	/*printf("Ingrese el nombre de la mascota: ");
 	_flushall();
-	gets(nomMasc);
+	gets(nomMasc);*/
+	printf("Ingrese el DNI del duenio de la mascota: ");
+	scanf("%d", &dni);
 	
-	fread(&masc, sizeof(Mascota), 1, mascotas);
-	while(!feof(mascotas)){
-		if(strcmp(masc.ApellidoyNombre, nomMasc) == 0){
+	//rewind(mascotas);
+	rewind(turnos);
+	
+	//fread(&masc, sizeof(Mascota), 1, mascotas);
+	fread(&turno, sizeof(Turnos), 1, turnos);
+	
+	while(!feof(turnos)){
+		//if(strcmp(masc.ApellidoyNombre, nomMasc) == 0){
 			
-		fread(&turno, sizeof(Turnos), 1, turnos);	
+		//fread(&turno, sizeof(Turnos), 1, turnos);	
 			
-			while(!feof(turnos)){
+			//while(!feof(turnos)){
 				
-				if(masc.DNI_Duenio == turno.DNI_Duenio && turno.atendido == false){
+				if(turno.DNI_Duenio == dni && turno.atendido == false){
 				
 				
 				printf("Evolucion de la mascota: ");
@@ -183,28 +258,29 @@ void evolMasc(FILE *mascotas, FILE *turnos){ //Falta completar
 				bandera = true;
 				turno.atendido = true;
 				
-				fseek(turnos, sizeof(turnos), SEEK_CUR);
-				fwrite(&turno, sizeof(turnos), 1, turnos);
+				fseek(turnos, -sizeof(Turnos), SEEK_CUR);
+				fwrite(&turno, sizeof(Turnos), 1, turnos);
 				
 			}
-				fread(&turno, sizeof(turnos), 1, turnos);
-				
+			else{
+				fread(&turno, sizeof(Turnos), 1, turnos);
 			}
 			
-			fread(&masc, sizeof(Mascota), 1, mascotas);
-		}
+			
+			//fread(&masc, sizeof(Mascota), 1, mascotas);
+		
 		
 		if(bandera == false){
 			
-			printf("EEROR. El nombre ingresado no se encuentra registrado.");
+			printf("ERROR. El nombre ingresado no se encuentra registrado.");
 		}
 		
 	}
     
-	fclose(mascotas);
+	//fclose(mascotas);
 	fclose(turnos);
 	
-	
+
 }
 
 
