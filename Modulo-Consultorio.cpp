@@ -11,7 +11,7 @@ FILE *mascotas;
 FILE *turnos;
 
 
-struct Usuarios
+/*struct Usuarios
 {	
 	cadena usuario;
 	cadena contrasenea;
@@ -27,7 +27,7 @@ struct Veterinario
 	int Dni;
 	char Telefono[25];
 	
-};
+};*/
 
 int menuVet();
 bool IniciarSesion(FILE *ArchVet);
@@ -139,13 +139,13 @@ bool IniciarSesion(FILE *ArchVet){
 		system("PAUSE");
 		exit(1);
 	}
-   printf("INICIO DE SESION\n");
-   printf("---------------");
-   printf("Matricula: ");
-   _flushall();
-   scanf("%d", &Matr);
-   printf("Clave: ");
-   gets(contr);
+  printf("\nINICIO DE SESION");
+  printf("\n---------------\n");
+  printf("Matricula: ");
+  scanf("%d", &Matr);
+  _flushall();
+  printf("Clave: ");
+  gets(contr);
    
     fread(&vet, sizeof(vet), 1, ArchVet);
     while(!feof(ArchVet)){
