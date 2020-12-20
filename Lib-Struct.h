@@ -26,7 +26,7 @@ struct Veterinario
 	int Matricula;
 	int Dni;
 	char Telefono[25];
-	
+	cadena Contrasenea;
 };
 
 struct Mascota
@@ -46,4 +46,5 @@ struct Turnos
 	Fecha Fecha;
 	int DNI_Duenio;
 	char Detalle_Atencion[380];
+	int atendido;
 };
