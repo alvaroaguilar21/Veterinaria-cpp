@@ -13,7 +13,7 @@ struct Fecha
 	int anio;
 };
 
-struct Usuarios
+/*struct Usuarios
 {	
 	cadena usuario;
 	cadena contrasenea;
@@ -27,7 +27,15 @@ struct Veterinario
 	int Matricula;
 	int Dni;
 	char Telefono[25];
-	
+	cadena Contrasenea;
+};*/
+struct Usuario1{
+	char usuario[10];
+	char contrasena[32];
+	char puesto[20];
+	char apeyNom[60];
+	int matricula;
+	int atenciones;
 };
 
 struct Mascota
