@@ -37,42 +37,46 @@ void evolMasc(FILE *mascotas, FILE *turnos);
 
 main(){
     
-	bool ingreso = false;
+	bool Ingreso = false;
 
 	int opc;
 	do{
 		opc=menuVet();
 		switch(opc){
-			case 1:   if(ingreso == true){
-				
-			          IniciarSesion(ArchVet);
-                    }
-                    else{
-                    	printf("Inicie sesion");
-					}
+			case 1:   Ingreso == IniciarSesion(ArchVet);
+				      if(Ingreso){
+				      	printf("¡Bienvenido!\n");
+					  }
+					  
+					  else{	
+					  printf("Error al iniciar sesion...");
+					  }
+			        
 			          system("cls");
 			          break;
 			
-			case 2: if(ingreso == true){
-				
-			         void Listar_turno(FILE *turnos);
-                    }
-                    else{
-                    	printf("Inicie sesion");
-					}
+			case 2: if(!Ingreso){
+				      printf("Inicie sesion.");
+			          
+                                 }
+                                 else{
+                    	          IniciarSesion(ArchVet);
+                    	          Listar_turno(turnos);
+			         }
 			         
-			          system("PAUSE");
+			          //system("PAUSE");
 			          system("cls");
 			          break;
 			
-			case 3: if(ingreso == true){
-				
-			         evolMasc(mascotas, turnos);
-                    }
-                    else{
-                    	printf("Inicie sesion");
-					}
+			case 3: if(!Ingreso){
+				 printf("Inicie sesion.");
+			         }
+                                 else{
+                    	         IniciarSesion(ArchVet);
+                    	         evolMasc(mascotas, turnos);
+			         }
 			         
+			          //system("PAUSE");
 			          system("cls");
 			          break;
 			          
@@ -86,10 +90,11 @@ main(){
 			system("PAUSE");
 		}
 		
-	}while(opc != 5);
+	}while(opc != 4);
 	
-	fclose(arch);
-	
+	fclose(ArchVet);
+	fclose(turnos);
+	fclose(mascotas);
 	system("pause");
  
  
@@ -100,20 +105,21 @@ main(){
 
 
 int menuVet(){
-	int op=0;
+	int opc=0;
 	system("cls");
-	printf("   Modulo Consultorio veterinario");
-	printf("\t=================================\n");
-	printf("\t 1.- Iniciar sesion\n");
-	printf("\t 2.- Visualizar lista de espera de turnos(informe)\n");
-	printf("\t 3.- Registrar evolución de la mascota\n");
-	printf("\t 4.- Cerrar la aplicación\n");
-	printf("\t------------------------------------------\n");
-	printf("\nIngrese una opcion: ");
-	int opc;
+	printf("*********************************Consultorio******************************************\n");
+	printf("****************** 1) Iniciar sesion *************************************************\n");
+	printf("****************** 2) Visualizar lista de espera de turnos (informe)******************\n");
+	printf("****************** 3) Registrar evolucion de la mascota ******************************\n");
+	printf("****************** 4) Salir **********************************************************\n");
+	printf("**************************************************************************************\n");
+        printf("\nIngrese una opcion");
+	printf("\n------------------\n->");
 	scanf("%d", &opc);
+	
 	return opc;
 	
+	system("\npause");
 }
 
 bool IniciarSesion(FILE *ArchVet){
@@ -128,7 +134,7 @@ bool IniciarSesion(FILE *ArchVet){
 		
 		system("CLS");
 		printf("\n\n Se produjo un ERROR al intentar abrir el archivo\n");
-		printf("comuniquese con el administrador del Sistema. Gracias");
+		printf("Comuniquese con el administrador del Sistema. Gracias");
 		printf("\n\n\t");
 		system("PAUSE");
 		exit(1);
@@ -143,7 +149,7 @@ bool IniciarSesion(FILE *ArchVet){
    
     fread(&vet, sizeof(vet), 1, ArchVet);
     while(!feof(ArchVet)){
-        if(vet.Matricula == Matr && strcmp(vet.contra, contr) == 0){
+        if(vet.Matricula == Matr && strcmp(vet.Contrasenea, contr) == 0){
          	
          	printf("\nBienvenido\n");
          	return true;
@@ -173,7 +179,7 @@ void Listar_turno(FILE *turnos){
 		
 		system("CLS");
 		printf("\n\n Se produjo un ERROR al intentar abrir el archivo\n");
-		printf("comuniquese con el administrador del Sistema. Gracias");
+		printf("Comuniquese con el administrador del Sistema. Gracias");
 		printf("\n\n\t");
 		system("PAUSE");
 		exit(1);
@@ -183,16 +189,16 @@ void Listar_turno(FILE *turnos){
 	scanf("%d/%d/%d",&dia, &mes, &anio);
 	printf("\nIngrese su Matricula: ");
 	scanf("%d", &matric);
-	printf("A continuacion se muestra la lista de turnos de la fecha %d/%d/%d", dia, mes, annio);
+	printf("A continuacion se muestra la lista de turnos de la fecha %d/%d/%d", dia, mes, anio);
 	
 	rewind(turnos);
 	while(!feof(turnos)){
 		if(matric == turn.Matric_Veterinario && dia == turn.fecha.dia && mes == turn.fecha.mes && anio == turn.fecha.anio){
 			
-			printf("\nNombre: %s", Mascota.ApellidoyNombre);
-			printf("\nDomicilio: %s", Mascota.Domicilio);
-			printf("\nDNI: %d", Mascota.DNI_Duenio);
-			printf("\nPeso: %f", Mascota.Peso);
+			printf("\nNombre: %s", masc.ApellidoyNombre);
+			printf("\nDomicilio: %s", masc.Domicilio);
+			printf("\nDNI: %d", masc.DNI_Duenio);
+			printf("\nPeso: %f", masc.Peso);
 				
 		}
 		
@@ -253,7 +259,7 @@ void evolMasc(FILE *mascotas, FILE *turnos){ //Falta completar
 				
 				printf("Evolucion de la mascota: ");
 				_flushall();
-				gets(turno.Detalle_Atencion)
+				gets(turno.Detalle_Atencion);
 				
 				bandera = true;
 				turno.atendido = true;
