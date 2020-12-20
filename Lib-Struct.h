@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -26,7 +27,7 @@ struct Veterinario
 	int Matricula;
 	int Dni;
 	char Telefono[25];
-	cadena Contrasenea;
+	
 };
 
 struct Mascota
@@ -46,5 +47,15 @@ struct Turnos
 	Fecha Fecha;
 	int DNI_Duenio;
 	char Detalle_Atencion[380];
-	int atendido;
 };
+
+struct Usuario1{
+	char usuario[10];
+	char contrasena[32];
+	char puesto[20];
+	char apeyNom[60];
+	int matricula;
+	int atenciones;
+};
+
+

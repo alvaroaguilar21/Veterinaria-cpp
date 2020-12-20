@@ -5,16 +5,6 @@
 #include<string.h>
 #include "Lib-Struct.h"
 
-struct Usuario1{
-	char usuario[10];
-	char contrasena[32];
-	char puesto[20];
-	char apeyNom[60];
-	int matricula;
-	int atenciones;
-};
-
-
 void registrar(int opc);
 void atenciones();
 void ranking();
