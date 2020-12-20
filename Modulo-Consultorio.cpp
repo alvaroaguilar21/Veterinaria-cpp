@@ -143,9 +143,9 @@ bool IniciarSesion(FILE *usuario){
   printf("\n---------------\n");
   printf("Matricula: ");
   scanf("%d", &Matr);
-  _flushall();
+  //_flushall();
   printf("Clave: ");
-  gets(contr);
+  scanf("%s", &contr);
    
     fread(&vet, sizeof(vet), 1, usuario);
     while(!feof(usuario)){
