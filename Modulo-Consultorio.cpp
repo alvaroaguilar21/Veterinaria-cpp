@@ -6,7 +6,7 @@
 typedef char cadena[45];
 
 FILE *usuario;
-FILE *ArchVet;
+//FILE *ArchVet;
 FILE *mascotas;
 FILE *turnos;
 
@@ -30,7 +30,7 @@ struct Veterinario
 };*/
 
 int menuVet();
-bool IniciarSesion(FILE *ArchVet);
+bool IniciarSesion(FILE *usuario);
 void Listar_turno(FILE *turnos);
 void evolMasc(FILE *mascotas, FILE *turnos);
 
@@ -43,7 +43,7 @@ main(){
 	do{
 		opc=menuVet();
 		switch(opc){
-			case 1:   Ingreso == IniciarSesion(ArchVet);
+			case 1:   Ingreso == IniciarSesion(usuario);
 				      if(Ingreso){
 				      	printf("¡Bienvenido!\n");
 					  }
@@ -60,7 +60,7 @@ main(){
 			          
                                  }
                                  else{
-                    	          IniciarSesion(ArchVet);
+                    	          IniciarSesion(usuario);
                     	          Listar_turno(turnos);
 			         }
 			         
@@ -72,7 +72,7 @@ main(){
 				 printf("Inicie sesion.");
 			         }
                                  else{
-                    	         IniciarSesion(ArchVet);
+                    	         IniciarSesion(usuario);
                     	         evolMasc(mascotas, turnos);
 			         }
 			         
@@ -92,7 +92,7 @@ main(){
 		
 	}while(opc != 4);
 	
-	fclose(ArchVet);
+	fclose(usuario);
 	fclose(turnos);
 	fclose(mascotas);
 	system("pause");
@@ -122,18 +122,18 @@ int menuVet(){
 	system("\npause");
 }
 
-bool IniciarSesion(FILE *ArchVet){
+bool IniciarSesion(FILE *usuario){
    
-   ArchVet= fopen("Veterinario.dat", "rb");
-   Usuarios usuar;
+   usuario= fopen("Usuarios.dat", "rb");
+   //Usuarios usuar;
    int Matr;
-   cadena contr;
-   Veterinario vet;
+   char contr;
+   Usuario1 vet;
    
-  if(ArchVet == NULL){
+  if(usuario == NULL){
 		
 		system("CLS");
-		printf("\n\n Se produjo un ERROR al intentar abrir el archivo\n");
+		printf("\n\n Se produjo un EROR al intentar abrir el archivo\n");
 		printf("Comuniquese con el administrador del Sistema. Gracias");
 		printf("\n\n\t");
 		system("PAUSE");
@@ -147,9 +147,9 @@ bool IniciarSesion(FILE *ArchVet){
   printf("Clave: ");
   gets(contr);
    
-    fread(&vet, sizeof(vet), 1, ArchVet);
-    while(!feof(ArchVet)){
-        if(vet.Matricula == Matr && strcmp(vet.Contrasenea, contr) == 0){
+    fread(&vet, sizeof(vet), 1, usuario);
+    while(!feof(usuario)){
+        if(vet.matricula == Matr && strcmp(vet.contrasena, contr) == 0){
          	
          	printf("\nBienvenido\n");
          	return true;
