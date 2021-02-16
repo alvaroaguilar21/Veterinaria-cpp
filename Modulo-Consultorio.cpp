@@ -43,7 +43,7 @@ main(){
 	do{
 		opc=menuVet();
 		switch(opc){
-			case 1:   Ingreso == IniciarSesion(usuario);
+			case 1:   Ingreso = IniciarSesion(usuario);
 				      if(Ingreso){
 				      	printf("¡Bienvenido!\n");
 					  }
@@ -52,15 +52,15 @@ main(){
 					  printf("Error al iniciar sesion...");
 					  }
 			        
-			          system("cls");
+			          system("pause");
 			          break;
 			
 			case 2: if(!Ingreso){
 				      printf("Inicie sesion.");
-			          
+			          IniciarSesion(usuario);
                                  }
                                  else{
-                    	          IniciarSesion(usuario);
+                    	          
                     	          Listar_turno(turnos);
 			         }
 			         
@@ -127,8 +127,9 @@ bool IniciarSesion(FILE *usuario){
    usuario= fopen("Usuarios.dat", "rb");
    //Usuarios usuar;
    int Matr;
-   char contr;
+   char contr[32];
    Usuario1 vet;
+   bool b=false;
    
   if(usuario == NULL){
 		
@@ -151,17 +152,14 @@ bool IniciarSesion(FILE *usuario){
     while(!feof(usuario)){
         if(vet.matricula == Matr && strcmp(vet.contrasena, contr) == 0){
          	
-         	printf("\nBienvenido\n");
-         	return true;
+         	printf("\nBienvenido\n");     	
+         	b = true;
 		}
-		 else{
-		 	printf("\nError al iniciar sesion\n");
-		 	printf("Vuelva a intentarlo\n");
-		 }
+
+		 fread(&vet, sizeof(vet), 1, usuario);
 		 	 
-    }
- 
-     return false;
+    }     
+     return b;
  
 }
 
@@ -189,21 +187,30 @@ void Listar_turno(FILE *turnos){
 	scanf("%d/%d/%d",&dia, &mes, &anio);
 	printf("\nIngrese su Matricula: ");
 	scanf("%d", &matric);
-	printf("A continuacion se muestra la lista de turnos de la fecha %d/%d/%d", dia, mes, anio);
+	printf("\nA continuacion se muestra la lista de turnos de la fecha %d/%d/%d", dia, mes, anio);
 	
 	rewind(turnos);
+	fread(&turn, sizeof(Turnos), 1, turnos);
 	while(!feof(turnos)){
-		if(matric == turn.Matric_Veterinario && dia == turn.fecha.dia && mes == turn.fecha.mes && anio == turn.fecha.anio){
+		if(matric == turn.Matric_Veterinario && dia == turn.Fecha.dia && mes == turn.Fecha.mes && anio == turn.Fecha.anio){
+			rewind(mascotas);
+			fread(&masc, sizeof(Mascota), 1, mascotas);
+			while(!feof(mascotas)){
+				printf("\nDNI: %d", masc.DNI_Duenio);
+				if (masc.DNI_Duenio == turn.DNI_Duenio){
+					printf("\nNombre: %s", masc.ApellidoyNombre);
+					printf("\nDomicilio: %s", masc.Domicilio);
+					printf("\nDNI: %d", masc.DNI_Duenio);
+					printf("\nPeso: %f", masc.Peso);
+				}
+				fread(&masc, sizeof(Mascota), 1, mascotas);
+			}
 			
-			printf("\nNombre: %s", masc.ApellidoyNombre);
-			printf("\nDomicilio: %s", masc.Domicilio);
-			printf("\nDNI: %d", masc.DNI_Duenio);
-			printf("\nPeso: %f", masc.Peso);
 				
 		}
 		
 		fread(&turn, sizeof(Turnos), 1, turnos);
-		fread(&masc, sizeof(Mascota), 1, mascotas);
+		
 		
 	}
 	
@@ -211,7 +218,7 @@ void Listar_turno(FILE *turnos){
 	fclose(turnos);
 	fclose(mascotas);
 	
-	
+	system("pause");
 }
 
 
@@ -254,7 +261,7 @@ void evolMasc(FILE *mascotas, FILE *turnos){ //Falta completar
 			
 			//while(!feof(turnos)){
 				
-				if(turno.DNI_Duenio == dni && turno.atendido == false){
+				if(turno.DNI_Duenio == dni && strlen(turno.Detalle_Atencion)==0){
 				
 				
 				printf("Evolucion de la mascota: ");
@@ -262,7 +269,7 @@ void evolMasc(FILE *mascotas, FILE *turnos){ //Falta completar
 				gets(turno.Detalle_Atencion);
 				
 				bandera = true;
-				turno.atendido = true;
+				//turno.atendido = true;
 				
 				fseek(turnos, -sizeof(Turnos), SEEK_CUR);
 				fwrite(&turno, sizeof(Turnos), 1, turnos);

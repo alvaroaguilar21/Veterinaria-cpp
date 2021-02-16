@@ -57,13 +57,5 @@ struct Turnos
 	char Detalle_Atencion[380];
 };
 
-struct Usuario1{
-	char usuario[10];
-	char contrasena[32];
-	char puesto[20];
-	char apeyNom[60];
-	int matricula;
-	int atenciones;
-};
 
 

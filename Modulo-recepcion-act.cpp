@@ -5,28 +5,22 @@
 
 typedef char Cadena[45];
 
-struct Usuario1
-{	
-	Cadena usuario1;
-	Cadena contrasenea1;
-};
-
 
 bool IniciarSesion(FILE *usuario);
-void RegistroMascota(FILE *mascotas);
-void RegistroTurnos(FILE *turnos);
+void RegistroMascota(FILE *mascotas,  int &n);
+void RegistroTurnos(FILE *turnos, FILE *veterinario);
 void Listado(FILE *turnos);
 
 main(){
 	
 	FILE *usuarios = fopen("usuarios.dat", "a+b");
 	FILE *mascotas = fopen("Mascotas.dat", "a+b");
-	FILE *turnos = fopen("Turnos.dat", "a+b");
+	FILE *turnos = fopen("Turnos.dat", "a+b");	
 	
 	int opc;
 	
 	do{
-		
+		int n=0;
 		system("cls");
 		printf("*********************************Recepcion********************************************\n");
 		printf("****************** 1) Iniciar sesion *************************************************\n");
@@ -44,12 +38,12 @@ main(){
 					fclose(usuarios);
 			        break;
 			        
-			case 2: RegistroMascota(mascotas);
+			case 2: RegistroMascota(mascotas, n);
 					break;
 					
-			case 3: veterinario = fopen("Veterinarios.dat","rb");
-					RegistroTurnos(turnos,veterinario);
-					fclose(veterinario);
+			case 3: usuarios = fopen("usuarios.dat","rb");
+					RegistroTurnos(turnos, usuarios);
+					fclose(usuarios);
 			        break;
 			        
 			case 4: Listado(turnos);
@@ -66,7 +60,7 @@ bool IniciarSesion(FILE *usuario){
 	Cadena usuario1, contrasenea1;
 
 	rewind(usuario);
-	Usuarios U;
+	Usuario1 U;
 	//cadena usuario, contrasenea;
 	fread(&U, sizeof(U), 1, usuario);
 	
@@ -83,7 +77,7 @@ bool IniciarSesion(FILE *usuario){
 	gets(contrasenea1);
 	
 	while(!feof(usuario)){
-		if (strcmp(usuario1, U.usuario) == 0 && strcmp(contrasenea1, U.contrasenea) == 0) 
+		if (strcmp(usuario1, U.usuario) == 0 && strcmp(contrasenea1, U.contrasena) == 0) 
 		printf("\n*********************Bienvenido/a**************************");
 		return true;
 	}
@@ -104,16 +98,18 @@ void RegistroMascota(FILE *mascotas,  int &n){
 	
 	do{
 	printf("\nIngrese nombre y apellido de la mascota: "); //apellido de la familia
+	_flushall();
 	gets(m.ApellidoyNombre);
 	printf("\nIngrese el domicilio: ");
 	gets(m.Domicilio);
-	_flushall;
+	
 	printf("\nIngrese su DNI: ");
 	scanf("%d", &m.DNI_Duenio);
-	_flushall;
+	
 	printf("\nIngrese la localidad: ");
+	_flushall();
 	gets(m.Localidad);
-	_flushall;
+	
 	printf("\nIngrese la fecha de nacimiento de la mascota: ");
 	printf("\nDia: ");
 	scanf("%d", &m.FechadeNac.dia);
@@ -122,11 +118,11 @@ void RegistroMascota(FILE *mascotas,  int &n){
 	printf("\nAño: ");
 	scanf("%d", &m.FechadeNac.anio);
 	printf("\nIngrese el peso de la mascota: ");
-	scanf("%f", &m.Peso);
-	_flushall;
+	scanf("%f", &m.Peso);	
 	printf("\nIngrese su nro de telefono: ");
+	_flushall();
 	gets(m.Telefono);
-	_flushall;
+	
 	fwrite(&m, sizeof(m), 1, mascotas);
 	
 	printf("\nDesea seguir registrando mascotas? (s/n) ");
@@ -140,9 +136,9 @@ void RegistroMascota(FILE *mascotas,  int &n){
 	
 	//Pasa los registros a un array
     
-    fread(&m, sizeof(Mascota),1 ,mascotas); 
+    /*fread(&m, sizeof(Mascota),1 ,mascotas); 
 	 
-    int i=0, n;
+    int i=0, b;
     
     while(feof(mascotas)==0)
     {     
@@ -179,7 +175,7 @@ void RegistroMascota(FILE *mascotas,  int &n){
        fwrite(&m, sizeof(Mascota), 1, mascotas);           
     } 
     system("pause");  
-	
+	*/
 	
 	fclose(mascotas);
 	
@@ -192,7 +188,7 @@ void RegistroTurnos(FILE *turnos, FILE *veterinario){
 	int B;
 	
 	rewind(veterinario);
-	Veterinario v;
+	Usuario1 v;
 	fread(&v, sizeof(v), 1, veterinario);
 	
 	if(veterinario == NULL)
@@ -202,10 +198,10 @@ void RegistroTurnos(FILE *turnos, FILE *veterinario){
 	}
 	
 	do{	
-	do{
+	//do{
 	printf("\nIngrese la matricula del veterinario: ");
 	scanf("%d", &t.Matric_Veterinario);
-	}while(t.Matric_Veterinario != v.Matricula);
+	//}while(t.Matric_Veterinario != v.matricula);
 	
 	printf("\nIngrese la fecha: ");
 	printf("\nDia: ");
@@ -216,9 +212,8 @@ void RegistroTurnos(FILE *turnos, FILE *veterinario){
 	scanf("%d", &t.Fecha.anio);
 	printf("\nIngrese su DNI: ");
 	scanf("%d", &t.DNI_Duenio);
-	_flushall;
-	printf("\nIngrese el detalle de atencion: ");
-	gets(t.Detalle_Atencion);
+	_flushall();
+	strcmp(t.Detalle_Atencion, "");
 	fwrite(&t, sizeof(t), 1, turnos);
 	
 	printf("\nDesea seguir registrando mascotas? (s/n) ");
