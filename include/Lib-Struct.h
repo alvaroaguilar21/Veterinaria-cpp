@@ -1,61 +1,38 @@
+#ifndef LIB_STRUCT_H
+#define LIB_STRUCT_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <conio.h>
+typedef char Cadena[45];
 
-typedef char cadena[45];
-
-struct Fecha
-{
-	int dia;
-	int mes;
-	int anio;
+struct Fecha {
+    int dia;
+    int mes;
+    int anio;
 };
 
-/*struct Usuarios
-{	
-	cadena usuario;
-	cadena contrasenea;
-	char ApellidoyNombre[60];
-	
+struct Usuario1 {
+    Cadena usuario;
+    Cadena contrasena;
+    Cadena apeyNom;
+    int matricula;
+    int atenciones;
+    char puesto[20]; // "Veterinario" o "Asistente"
 };
 
-struct Veterinario
-{
-	char ApellidoyNombre[60];
-	int Matricula;
-	int Dni;
-	char Telefono[25];
-	cadena Contrasenea;
-};*/
-struct Usuario1{
-	char usuario[10];
-	char contrasena[32];
-	char puesto[20];
-	char apeyNom[60];
-	int matricula;
-	int atenciones;
+struct Mascota {
+    Cadena ApellidoyNombre;
+    Cadena Domicilio;
+    int DNI_Duenio;
+    Cadena Localidad;
+    Fecha FechadeNac;
+    float Peso;
+    Cadena Telefono;
 };
 
-struct Mascota
-{
-	char ApellidoyNombre[60];
-	char Domicilio[60];
-	int DNI_Duenio;
-	char Localidad[60];
-	Fecha FechadeNac;
-	float Peso;
-	char Telefono[25];
+struct Turnos {
+    int Matric_Veterinario;
+    int DNI_Duenio;
+    Fecha Fecha;
+    char Detalle_Atencion[100];
 };
 
-struct Turnos
-{
-	int Matric_Veterinario;
-	Fecha Fecha;
-	int DNI_Duenio;
-	char Detalle_Atencion[380];
-};
-
-
-
+#endif
